@@ -11,13 +11,13 @@
 	<h2 align="center">Employee Management System</h2>
 	<div class="container my-2">
 		<h4>Employee List</h4>
-		<a th:href="@{/employee}" class="btn btn-primary btn-sm mb-3">Add Employee</a><br>
+		<a th:href="@{/employee}" class="btn btn-primary">Add Employee</a><br>
 		<table border="1" class="table table-striped table-responsive-md">
 			<thead>
 				<tr>
-					<th>Employee First Name</th>
-					<th>Employee Last Name</th>
-					<th>Employee Email ID</th>
+					<th><a class = "btn btn-danger" th:href = "@{'/page/' + ${currentPage} + '?sortField=firstName&sortOrder=' + ${reverseSortOrder}}">Employee First Name</a></th>
+					<th><a class = "btn btn-danger" th:href = "@{'/page/' + ${currentPage} + '?sortField=lastName&sortOrder=' + ${reverseSortOrder}}">Employee Last Name</a></th>
+					<th><a class = "btn btn-danger" th:href = "@{'/page/' + ${currentPage} + '?sortField=emailId&sortOrder=' + ${reverseSortOrder}}">Employee Email ID</a></th>
 					<th>Action</th>
 				</tr>
 			</thead>
@@ -32,6 +32,32 @@
 				</tr>
 			</tbody>
 		</table>
+		<div th:if = "${totalPages > 1}">
+			<div class = "row col-sm-12">
+				<div class = "col-sm-2">
+					Total Rows: [[${totalEmployees}]]
+				</div>
+				<div class = "col-sm-7">
+					<span th:each = "i: ${#numbers.sequence(1, totalPages)}">
+						<a th:if = "${currentPage != i}" th:href = "@{'/page/' + ${i} + '?sortField=' + ${sortField} + '&sortOrder=' + ${sortOrder}}">[[${i}]]</a>
+						<span th:unless = "${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
+					</span>
+				</div>
+				<div class = "col-sm-1">
+					<a th:if = "${currentPage > 1}" th:href = "@{'/page/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortOrder=' + ${sortOrder}}">Previous</a>
+					<span th:unless = "${currentPage > 1}">Previous</span>
+				</div>
+				<div class = "col-sm-1">
+					<a th:if = "${currentPage < totalPages}" th:href = "@{'/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortOrder=' + ${sortOrder}}">Next</a>
+					<span th:unless = "${currentPage < totalPages}">Next</span>
+				</div>
+				<div class = "col-sm-1">
+					<a th:if = "${currentPage < totalPages}" th:href = "@{'/page/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortOrder=' + ${sortOrder}}">Last</a>
+					<span th:unless = "${currentPage < totalPages}">Last</span>
+				</div>
+			</div>
+		</div>
+		
 	</div>
 </body>
 </html>
